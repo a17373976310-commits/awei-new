@@ -62,23 +62,9 @@ os.makedirs(static_path, exist_ok=True)
 os.makedirs(os.path.join(static_path, "history"), exist_ok=True)
 
 # Mount static folder for history and other assets
+# Static files should be defined early, but after API routes that might use same prefix (none here)
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 
-if os.path.exists(dist_path):
-    app.mount("/assets", StaticFiles(directory=os.path.join(dist_path, "assets")), name="assets")
-    
-    @app.get("/{full_path:path}")
-    async def serve_spa(full_path: str):
-        if full_path.startswith("api"):
-            raise HTTPException(status_code=404, detail="API endpoint not found")
-        return FileResponse(os.path.join(dist_path, "index.html"))
-else:
-    # Fallback for local development
-    app.mount("/frontend", StaticFiles(directory=frontend_path), name="frontend")
-    
-    @app.get("/")
-    async def read_root():
-        return FileResponse(os.path.join(frontend_path, "index.html"))
 
 @app.get("/api/tasks/{task_id}")
 async def get_task_status(task_id: str):
@@ -476,6 +462,25 @@ async def run_generation_task(
         error_trace = traceback.format_exc()
         print(f"ASYNC TASK ERROR: {str(e)}\n{error_trace}")
         task_service.update_task(task_id, status="failed", error=str(e))
+
+# SPA Serving - MUST BE DEFINED LAST
+if os.path.exists(dist_path):
+    # In production (Zeabur), serve from dist
+    app.mount("/assets", StaticFiles(directory=os.path.join(dist_path, "assets")), name="assets")
+    
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        # Prevent catch-all from swallowing 404s for API
+        if full_path.startswith("api"):
+            raise HTTPException(status_code=404, detail=f"API endpoint not found: {full_path}")
+        return FileResponse(os.path.join(dist_path, "index.html"))
+else:
+    # Fallback for local development
+    app.mount("/frontend", StaticFiles(directory=frontend_path), name="frontend")
+    
+    @app.get("/")
+    async def read_root():
+        return FileResponse(os.path.join(frontend_path, "index.html"))
 
 if __name__ == "__main__":
     import uvicorn
