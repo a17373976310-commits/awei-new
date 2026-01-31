@@ -52,10 +52,6 @@ app.add_middleware(
 async def health_check():
     return {"status": "ok", "timestamp": time.time()}
 
-@app.get("/")
-async def root():
-    return {"message": "AI Image Gen Backend API is running"}
-
 # Serve static files
 dist_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "dist")
 frontend_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
@@ -71,8 +67,10 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 if os.path.exists(dist_path):
     app.mount("/assets", StaticFiles(directory=os.path.join(dist_path, "assets")), name="assets")
     
-    @app.get("/")
-    async def read_root():
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        if full_path.startswith("api"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
         return FileResponse(os.path.join(dist_path, "index.html"))
 else:
     # Fallback for local development

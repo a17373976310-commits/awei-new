@@ -50,5 +50,5 @@ RUN mkdir -p static/history
 EXPOSE 8080
 
 # Start Command
-# Using python -m backend.main allows the script to handle production logic
-CMD ["python", "-m", "backend.main"]
+# Using uvicorn directly is standard for production FastAPI apps
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8080"]
