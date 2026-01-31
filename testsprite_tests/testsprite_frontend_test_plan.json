@@ -1,0 +1,401 @@
+[
+  {
+    "id": "TC001",
+    "title": "Sidebar multi-line text input with Enter and Shift+Enter",
+    "description": "Verify sidebar chat input accepts multi-line text where Enter sends message and Shift+Enter inserts newline.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the AI chat sidebar input field."
+      },
+      {
+        "type": "action",
+        "description": "Type multi-line text using Shift+Enter to insert line breaks."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that each Shift+Enter adds a newline character instead of sending the message."
+      },
+      {
+        "type": "action",
+        "description": "Press Enter without Shift to send the message."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the message is sent and shown in the chat history."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Sidebar image upload with multiple images and message send",
+    "description": "Verify user can upload multiple images in sidebar chat before sending message and images are sent correctly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open sidebar chat and select multiple images to upload."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm thumbnails for all uploaded images are displayed in the sidebar."
+      },
+      {
+        "type": "action",
+        "description": "Enter a multi-line text message and press Enter to send."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify message and all uploaded images are sent together in the chat request."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "AI proposal cards display correct module, subject images, ratios, and prompts",
+    "description": "Check AI-generated proposal cards show module names, subject selections with thumbnails, recommended ratios, and final prompts correctly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send multi-line text and images in sidebar chat."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify AI returns proposal cards with correct module name labels."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that each proposal card's subject selection includes correctly indexed thumbnails."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm recommended aspect ratios are displayed appropriately on proposal cards."
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure final prompts are visible and match expected optimized prompt format."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Proposal card 'Sync Prompt' updates workspace prompt input",
+    "description": "Verify that clicking 'Sync Prompt' on any proposal card updates the workspace prompt input field with the card's prompt text.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load proposal cards after chat response."
+      },
+      {
+        "type": "action",
+        "description": "Click 'Sync Prompt' button on a proposal card."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify workspace prompt input field updates with the proposal card's prompt exactly."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Proposal card 'Confirm and Generate' syncs prompt, ratio, and subject images to workspace",
+    "description": "Verify that clicking 'Confirm and Generate' updates workspace prompt input, aspect ratio selection, and gallery images properly prioritizing selected subject image.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send request and receive proposal cards."
+      },
+      {
+        "type": "action",
+        "description": "Click 'Confirm and Generate' on a proposal card with known subject images and aspect ratio."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate workspace's prompt input equals proposal card's final prompt."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that workspace ratio buttons reflect recommended ratio from the proposal card."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm the workspace gallery contains the subject image as the first item and other references afterwards."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Automatic image generation trigger after confirmation in workspace",
+    "description": "Validate that confirming a proposal card automatically initiates an image generation request with backend polling and updates the preview with generated image.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Confirm and generate a proposal card to sync workspace."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify workspace generation button triggers an API request to backend /api/generate endpoint automatically."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that frontend polls task status until completion."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that generated image appears in the workspace preview area once task is complete."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Backend logs include detailed FINAL_IMAGE_REQUEST with prompt and image hashes",
+    "description": "Verify backend prompt_debug.log contains FINAL_IMAGE_REQUEST entries with task details such as prompt text, images count, and SHA1 hashes.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Trigger image generation via frontend confirmation."
+      },
+      {
+        "type": "action",
+        "description": "Access backend prompt_debug.log file."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate presence of FINAL_IMAGE_REQUEST entries corresponding to generation."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that entries include prompt text, count of images involved, and SHA1 hashes of all images."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Workspace aspect ratio selection buttons update correctly",
+    "description": "Verify that workspace aspect ratio buttons reflect recommended ratio from proposal card and user can manually change and revert ratios.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Sync proposal card with recommended ratio to workspace."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm ratio buttons reflect the recommended ratio selected."
+      },
+      {
+        "type": "action",
+        "description": "Manually change aspect ratio selection in workspace."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify workspace uses newly selected ratio for subsequent generations."
+      },
+      {
+        "type": "action",
+        "description": "Resync a different proposal card with another ratio."
+      },
+      {
+        "type": "assertion",
+        "description": "Check ratio buttons update accordingly again."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Workspace gallery image management with subject and reference images",
+    "description": "Ensure workspace gallery prioritizes subject image at first position and includes all reference images on synchronization.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Use 'Confirm and Generate' on proposal card with multiple subject and reference images."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate gallery first image is the subject image selected in proposal card."
+      },
+      {
+        "type": "assertion",
+        "description": "Check gallery includes all reference images related to prompt."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no duplicate images appear and gallery updates correctly."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Robust error handling on backend image generation failures",
+    "description": "Verify system handles backend generation failures gracefully, logs errors, and informs frontend to display appropriate error messages.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate backend failure (e.g. BananaService failure or timeout) during image generation request."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm backend logs error details and does not crash."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify frontend receives error response and shows user-friendly error notification."
+      },
+      {
+        "type": "action",
+        "description": "Retry generation after error."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate recovery and retry succeed if backend recovers."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Multi-proposal card selection and generation process",
+    "description": "Check system behavior when user views multiple proposal cards and interacts with 'Sync Prompt' and 'Confirm and Generate' on different cards.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Submit input generating multiple proposal cards."
+      },
+      {
+        "type": "action",
+        "description": "Click 'Sync Prompt' on the first proposal card."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm workspace prompt updates accordingly."
+      },
+      {
+        "type": "action",
+        "description": "Click 'Confirm and Generate' on a different proposal card."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify workspace prompt, ratio, and gallery update to the second card's data."
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure generation task triggers using correct parameters of second card."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Backend chat message handling with unified director agent prompts",
+    "description": "Verify backend chat endpoint properly uses DIRECTOR_AGENT_PROMPT when Visual DNA is absent and IMAGE_COMPILER_PROMPT when Visual DNA is present in requests.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send chat request without Visual DNA parameter."
+      },
+      {
+        "type": "assertion",
+        "description": "Check backend chat service uses DIRECTOR_AGENT_PROMPT template."
+      },
+      {
+        "type": "action",
+        "description": "Send chat request including Visual DNA data."
+      },
+      {
+        "type": "assertion",
+        "description": "Validate backend chat service uses IMAGE_COMPILER_PROMPT accordingly."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Prompt optimization service dual-core operation",
+    "description": "Confirm prompt optimization service generates correct optimized prompts for nano_banana_en and seadream_cn cores and writes raw LLM responses to debug logs.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Trigger image generation requiring prompt optimization."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify optimized prompts contain expected language and formatting for each core."
+      },
+      {
+        "type": "assertion",
+        "description": "Check prompt_debug.log contains raw LLM response records."
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Backend task polling endpoint behavior and completion handling",
+    "description": "Test backend task polling API correctly reports task status updates and signals completion for frontend to update preview.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Submit image generation task."
+      },
+      {
+        "type": "action",
+        "description": "Call task polling endpoint repeatedly until success."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify polling returns in-progress messages initially."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm final polling response contains generated image data or status."
+      },
+      {
+        "type": "assertion",
+        "description": "Check frontend preview updates after final poll."
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "System logging and debug file maintenance under load",
+    "description": "Validate that system log files (debug.log and prompt_debug.log) are correctly written, rotated if applicable, and maintain data integrity under multiple concurrent generation requests.",
+    "category": "security",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Generate multiple images in parallel via UI."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all relevant debug log entries are present and not interleaved or corrupted."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that request sizes and FINAL_IMAGE_REQUEST markers are logged properly."
+      }
+    ]
+  }
+]

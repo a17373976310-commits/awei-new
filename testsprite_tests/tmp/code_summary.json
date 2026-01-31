@@ -1,0 +1,25 @@
+{
+  "tech_stack": ["HTML", "JavaScript", "CSS", "Python", "FastAPI", "Vite"],
+  "features": [
+    {
+      "name": "Unified Director Agent",
+      "description": "Unified agent for asset audit and intent orchestration, generating structured proposals.",
+      "files": ["backend/prompts_v3.py", "backend/services/chat_service.py"]
+    },
+    {
+      "name": "Sidebar Chat UI",
+      "description": "Interactive sidebar for uploading images, entering prompts, and viewing AI proposals.",
+      "files": ["frontend/index.html", "frontend/script.js", "frontend/style.css"]
+    },
+    {
+      "name": "Prompt Compiler & Logger",
+      "description": "Compiles final image generation prompts and logs request payloads for debugging.",
+      "files": ["backend/main.py", "backend/services/banana_service.py", "backend/prompt_debug.log"]
+    },
+    {
+      "name": "Workspace Sync",
+      "description": "Synchronizes sidebar proposals (prompt, ratio, images) to the main workspace.",
+      "files": ["frontend/script.js"]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+    "service": {
+        "name": "ai-image-gen",
+        "build": {
+            "command": "pip install -r requirements.txt"
+        },
+        "start": {
+            "command": "python -m backend.main"
+        }
+    }
+}

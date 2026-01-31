@@ -1,0 +1,21 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "executionArgs": {
+    "projectName": "awei-main",
+    "projectPath": "f:\\wei\\awei-main",
+    "testIds": [
+      "TC003",
+      "TC004",
+      "TC014",
+      "TC016"
+    ],
+    "additionalInstruction": "Test the core workflow: 1. Sidebar chat input handles multi-line text and images. 2. AI proposal cards display correctly with subject thumbnails. 3. 'Confirm and Generate' button synchronizes state to workspace (prompt, ratio, images) and triggers generation. 4. Image generation polling works and updates preview. 5. Backend logs FINAL_IMAGE_REQUEST in prompt_debug.log. Use localhost:5173.",
+    "envs": {
+      "API_KEY": "sk-user-S8v-YmDVhxv-rv35hwwkjctbiC_-93kZ0UWXwwvLnaGtTDwsd2B3KMLBbrleSIoQzGoXpqEIrcJZ5zAW9sqtfJqwNIPPXyrjQfiIWDKta39knhXrURH9DG25Jyyw8Zq2OCs"
+    }
+  },
+  "proxy": "http://b829842c-8ada-4bc7-87c2-9cf450bf3aa2:tWzwfLJkyjhXZk3OTKYeH4A10GJYdKxk@tun.testsprite.com:8080"
+}

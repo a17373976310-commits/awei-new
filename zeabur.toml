@@ -1,0 +1,7 @@
+[service]
+name = "awei-image-gen"
+type = "docker"
+
+[[expose]]
+type = "http"
+port = 8080

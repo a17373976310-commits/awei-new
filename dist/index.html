@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 绘图 - Nano Banana 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-DvHFSWF4.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CU-XAPLN.css">
+</head>
+
+<body>
+    <div id="app">
+        <header class="app-header">
+            <h1
+                style="font-size: 1.25rem; font-weight: 600; background: linear-gradient(to right, #fff, #a5b4fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                AI 创意工坊</h1>
+            <nav class="mode-switch">
+                <button id="btn-img-modify" class="nav-btn">图片修改</button>
+                <button id="btn-txt2img" class="nav-btn active">文生图</button>
+                <button id="btn-img2img" class="nav-btn">图生图</button>
+                <button id="btn-ai-assistant" class="nav-btn">AI 助手</button>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <div class="workspace-container">
+                <!-- Left Panel: Controls -->
+                <aside class="left-panel">
+                    <div id="controls-container">
+                        <!-- Image Upload (Img2Img only) -->
+                        <div id="group-image" class="control-group hidden">
+                            <label>源图像</label>
+                            <div class="upload-zone" id="upload-zone">
+                                <div class="upload-content">
+                                    <span class="icon">+</span>
+                                    <p>拖拽或粘贴图像</p>
+                                    <span class="sub-text">支持多图上传</span>
+                                </div>
+                                <input type="file" id="file-input" accept="image/*" multiple hidden>
+                                <canvas id="mask-canvas"></canvas>
+                            </div>
+                            <!-- Thumbnail Gallery -->
+                            <div id="upload-gallery" class="upload-gallery hidden"></div>
+                        </div>
+
+                        <!-- Model Selector -->
+                        <div class="control-group">
+                            <label>选择模型</label>
+                            <select id="model-select" class="model-select">
+                                <option value="comfly_nano_banana">Comfly Nano Banana 2 (官方源)</option>
+                                <option value="nano_banana_2_2k">Nano Banana 2-2k (高清版)</option>
+                                <option value="nano_banana_2_4k">Nano Banana 2-4k (超高清版)</option>
+                                <option value="nano_banana_official">Nano Banana (Google)</option>
+                                <option value="doubao_seedream_4_0">Doubao Seedream 4.0 (即梦4)</option>
+                                <option value="doubao_seedream_4_5">Doubao Seedream 4.5 (即梦4.5)</option>
+                                <option value="gpt_image_1_5">GPT-Image-1.5 (OpenAI)</option>
+                            </select>
+                        </div>
+
+                        <!-- API Key Input -->
+                        <div class="control-group">
+                            <label>API Key (可选)</label>
+                            <input type="password" id="api-key-input" class="api-key-input"
+                                placeholder="粘贴您的 API Key 以调用模型">
+                        </div>
+
+                        <!-- API URL Input -->
+                        <div class="control-group">
+                            <label>API 地址 (可选)</label>
+                            <input type="text" id="api-url-input" class="api-url-input"
+                                placeholder="输入自定义 API 地址 (例如: https://api.example.com)">
+                        </div>
+
+                        <!-- Scenario Selector -->
+                        <div id="group-scenario" class="control-group">
+                            <label>应用场景</label>
+                            <div class="scenario-selector">
+                                <button class="scenario-btn active" data-value="free_mode">通用模式</button>
+                                <button class="scenario-btn" data-value="ecommerce">电商模式</button>
+                            </div>
+
+                            <!-- Sub-Scenario (Hidden by default) -->
+                            <div id="sub-scenario-container" class="sub-scenario-wrapper hidden">
+                                <div class="scenario-group">
+                                    <div class="group-label">电商平台 (Platforms)</div>
+                                    <div class="group-btns">
+                                        <button class="scenario-btn sub-btn active"
+                                            data-value="taobao_main">淘宝主图</button>
+                                        <button class="scenario-btn sub-btn" data-value="taobao_detail">详情场景</button>
+                                        <button class="scenario-btn sub-btn" data-value="amazon_white">亚马逊白底</button>
+                                        <button class="scenario-btn sub-btn" data-value="amazon_detail">亚马逊A+</button>
+                                    </div>
+                                </div>
+                                <div class="scenario-group">
+                                    <div class="group-label">详情页设计 (Detail Pages)</div>
+                                    <div class="group-btns">
+                                        <button class="scenario-btn sub-btn" data-value="taobao_detail">淘宝详情</button>
+                                        <button class="scenario-btn sub-btn"
+                                            data-value="taobao_detail_suite">整套详情页</button>
+                                        <button class="scenario-btn sub-btn" data-value="amazon_detail">亚马逊A+</button>
+                                    </div>
+                                </div>
+                                <div class="scenario-group">
+                                    <div class="group-label">创意设计 (Creative)</div>
+                                    <div class="group-btns">
+                                        <button class="scenario-btn sub-btn" data-value="brand_story">品牌故事</button>
+                                        <button class="scenario-btn sub-btn" data-value="creative_poster">创意海报</button>
+                                    </div>
+                                </div>
+                                <div class="scenario-group">
+                                    <div class="group-label">辅助工具 (Tools)</div>
+                                    <div class="group-btns">
+                                        <button class="scenario-btn sub-btn" data-value="image_modify">图像修改</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aspect Ratio -->
+                        <div class="control-group">
+                            <label>输出尺寸</label>
+                            <div class="ratio-grid" id="ratio-grid">
+                                <!-- Ratios injected by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Prompt -->
+                        <div class="control-group">
+                            <label>你的指令</label>
+                            <textarea id="prompt-input" placeholder="例如：'把背景换成未来城市的夜景' 或 '添加复古滤镜'"></textarea>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <button id="generate-btn" class="primary-btn">
+                            <span class="icon">✨</span> 应用编辑
+                        </button>
+
+                        <!-- Cancel Button (hidden by default) -->
+                        <button id="cancel-btn" class="cancel-btn hidden">
+                            <span class="icon">⏸️</span> 取消任务
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Right Panel: Preview -->
+                <section class="right-panel">
+                    <div id="preview-container" class="preview-area">
+                        <div class="empty-state">
+                            <span class="icon">✨</span>
+                            <p>您生成的图像将显示在此处。</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Bottom Panel: History -->
+            <section class="history-section">
+                <h3>历史记录</h3>
+                <div class="history-list" id="history-list">
+                    <!-- History items injected by JS -->
+                    <div class="history-empty">你的生成历史将显示在这里</div>
+                </div>
+            </section>
+
+            <!-- Work Log Section -->
+            <section class="log-section">
+                <div class="log-header">
+                    <h3>工作日志</h3>
+                    <button id="clear-log-btn" class="clear-log-btn">清空</button>
+                </div>
+                <div class="log-list" id="log-list">
+                    <div class="log-empty">工作日志将显示在这里</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- History Detail Modal -->
+        <div id="image-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="modal-body">
+                    <div class="modal-image-container">
+                        <img id="modal-image" src="" alt="Full size">
+                    </div>
+                    <div class="modal-details">
+                        <div class="detail-group">
+                            <h4>优化后提示词</h4>
+                            <p id="modal-optimized-prompt"></p>
+                        </div>
+                        <div class="detail-group">
+                            <h4>原始提示词</h4>
+                            <p id="modal-prompt"></p>
+                        </div>
+                        <div class="detail-group hidden" id="modal-original-image-group">
+                            <h4>原始参考图</h4>
+                            <img id="modal-original-image" src="" alt="Original">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar-root"></div>
+</body>
+
+</html>
